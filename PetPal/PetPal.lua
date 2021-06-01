@@ -13,10 +13,12 @@
     local deadPet = false;
     local dismissedPet = false;
     f:SetScript("OnEvent", function(self,event, ...)
+
         if event == "PLAYER_LOGIN" then
             print("PetPal Loaded")
             print("Happy Hunting :)")
         end
+
         if event == "PLAYER_REGEN_DISABLED" then
             if (not UnitIsDead("player")) then
                 if select(2,UnitClass("player"))=="HUNTER" then
@@ -40,7 +42,20 @@
                 end 
             end
         end
-    
+
+        if event == "PLAYER_REGEN_ENABLED" then
+            happiness, damagePercentage, loyaltyRate = GetPetHappiness()
+            if (not UnitIsDead("player")) then
+                if select(2,UnitClass("player"))=="HUNTER" then
+                    if(UnitExists("pet")) then 
+                        if(happiness == 1) then
+                            local msg = "Feed your pet!"
+                            RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
+                        end
+                    end
+                end
+            end
+        end
     end)
 
 
