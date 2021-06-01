@@ -1,0 +1,7 @@
+## Interface: 20501
+## Title: PetPal
+## Notes: Helps hunters to keep track of pets
+## Author: Trey Tolleson
+## Version: 0.0.1
+
+PetPal.lua
