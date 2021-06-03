@@ -3,7 +3,6 @@
     Show pets happiness, dmg percent,loyalty stats,loyalty flavor, and food type on slash command ----- GetPetHappiness(), GetPetLoyalty(), GetPetFoodTypes()
     Display warning on combat if the pet is on not summoned--DONE, not attacking, passive, or dead-- DONE 
 ]]--
-
     local f = CreateFrame("Frame")
 	f:RegisterEvent("ADDON_LOADED");
 	f:RegisterEvent("PLAYER_LOGIN");
@@ -12,6 +11,31 @@
     f:RegisterEvent("PLAYER_REGEN_ENABLED");
     local deadPet = false;
     local dismissedPet = false;
+
+
+    SLASH_PETPAL1 = "/petpal"
+
+    local function slashPetPal()
+        petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(0)
+        happiness, damagePercentage, loyaltyRate = GetPetHappiness()
+        currXP, nextXP = GetPetExperience()
+        if not happiness then
+            DEFAULT_CHAT_FRAME:AddMessage("No Pet")
+        else
+            happy = ({"Unhappy", "Content", "Happy"})[happiness]
+	        loyalty = loyaltyRate > 0 and "gaining" or "losing"
+
+            DEFAULT_CHAT_FRAME:AddMessage("PET NAME: " ..petName.. " ---  PET LEVEL: " ..petLevel.." --- PET TYPE: " ..petType)
+	        DEFAULT_CHAT_FRAME:AddMessage(petName.. " is " .. happy)
+	        DEFAULT_CHAT_FRAME:AddMessage(petName.. " is doing " .. damagePercentage .. "% damage")
+	        DEFAULT_CHAT_FRAME:AddMessage(petName.. " is " .. loyalty .. " loyalty")
+            DEFAULT_CHAT_FRAME:AddMessage(petName.. "'s experience: " .. currXP .. " / " .. nextXP .. " until level " .. petLevel+1)
+        end
+    end
+
+    SlashCmdList["PETPAL"] = slashPetPal
+
+
     f:SetScript("OnEvent", function(self,event, ...)
 
         if event == "PLAYER_LOGIN" then
