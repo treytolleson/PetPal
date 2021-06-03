@@ -26,6 +26,7 @@
 	        loyalty = loyaltyRate > 0 and "gaining" or "losing"
 
             DEFAULT_CHAT_FRAME:AddMessage("PET NAME: " ..petName.. " ---  PET LEVEL: " ..petLevel.." --- PET TYPE: " ..petType)
+            DEFAULT_CHAT_FRAME:AddMessage(petName.. "'s loyalty:  " ..petLoyalty)
 	        DEFAULT_CHAT_FRAME:AddMessage(petName.. " is " .. happy)
 	        DEFAULT_CHAT_FRAME:AddMessage(petName.. " is doing " .. damagePercentage .. "% damage")
 	        DEFAULT_CHAT_FRAME:AddMessage(petName.. " is " .. loyalty .. " loyalty")
