@@ -16,4 +16,4 @@ V1.2: Alerts hunter when leaving combat if their pet is unhappy and needs to be 
 
 (6-3-21)
 
-V1.3: Added "/petpal" command to allow hunters to see pet happiness,loyalty,level,experience untill next level,pet type,and name.
+V1.3: Added "/petpal" command to allow hunters to see pet happiness,loyalty,level,damage,experience untill next level,pet type,and name.
