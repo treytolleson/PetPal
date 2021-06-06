@@ -23,3 +23,7 @@ V1.3: Added "/petpal" command to allow hunters to see pet happiness,loyalty,leve
 (6-4-21)
 
 V1.4: Edited /petpal command to improve readability and fixed bug to add alert to tell hunter to revive and feed pet when leaving combat if pet is unhappy and dead. Removed redundant code. 
+
+(6-4-21)
+
+V1.5: Fixed issue where hunters would have all pets in stable (no current pet) and would still be alerted to call pet.
