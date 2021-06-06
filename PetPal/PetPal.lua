@@ -5,6 +5,10 @@
 
     NEXT:
     Make tab for showing information and allow the toggling of alerts
+
+    BUGS:
+    -When player has not pet and is going to train a new pet "Call your pet" alert goes off.
+    To fix use GetStablePetInfo(0), if not petName then do nothing  ------------ FIXED!! 1.5
 ]]--
 
     local f = CreateFrame("Frame")
@@ -22,8 +26,7 @@
 
     local function slashPetPal()
 
-        -- Position 0 in stable is current pet
-        petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(0)
+        petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(0) -- Position 0 in stable is current pet
 
         happiness, damagePercentage, loyaltyRate = GetPetHappiness() 
 
@@ -49,11 +52,10 @@
 
     SlashCmdList["PETPAL"] = slashPetPal
 
-    --handle when events we registered take place
-    f:SetScript("OnEvent", function(self,event, ...)
+    f:SetScript("OnEvent", function(self,event, ...) --handle when events we registered take place
 
-        --show PetPal load when players log in
-        if event == "PLAYER_LOGIN" then 
+        if event == "PLAYER_LOGIN" then --show PetPal load when players log in
+
             if select(2,UnitClass("player"))=="HUNTER" then
                 pinkText = "|cffC67171"
                 DEFAULT_CHAT_FRAME:AddMessage(pinkText .. "PetPal Loaded ")
@@ -61,6 +63,7 @@
         end
 
         if event == "PLAYER_REGEN_DISABLED" then  -- player regen is disabled when players enter combat
+
             if (not UnitIsDead("player")) then    -- if player is alive
                 if select(2,UnitClass("player"))=="HUNTER" then -- and a hunter
                     if UnitIsDead("pet") then  -- if pet is dead
@@ -69,12 +72,16 @@
                             local msg = "Your Pet is Dead!"
                             RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
                         end	
+
                     elseif(not UnitExists("pet")) then -- if no pet summoned
+                        petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(0)
+                        if petName then -- check to make sure there is a pet in GetStablePetInfo(0)=[Current Pet], there could not be one if hunter wants to train new pet
                             dismissedPet = true;
                             if (dismissedPet) then
                                 local msg = "Call Your Pet!"
                                 RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
                             end
+                        end
                          
                     elseif UnitExists("pet") then  -- pet is summoned and alive
                         deadPet = false;           -- reset checker variables
@@ -84,8 +91,10 @@
             end
         end
 
-        if event == "PLAYER_REGEN_ENABLED" then  --player regen is enabled when players leave combat
+        if event == "PLAYER_REGEN_ENABLED" then --player regen is enabled when players leave combat, pets can only be fed out of combat
+                                            
             happiness, damagePercentage, loyaltyRate = GetPetHappiness()
+
             if (not UnitIsDead("player")) then
                 if select(2,UnitClass("player"))=="HUNTER" then
                     if(UnitExists("pet")) then 
@@ -94,6 +103,7 @@
                                 local msg = "Feed your pet!"
                                 RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
                             end
+
                         elseif UnitIsDead("pet") then --if pet is dead and needs to be fed
                             if(happiness == 1) then
                                 local msg = "Revive and feed your pet!"
