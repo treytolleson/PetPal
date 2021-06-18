@@ -35,3 +35,11 @@ V1.4: Edited /petpal command to improve readability and fixed bug to add alert t
 (6-4-21)
 
 V1.5: Fixed issue where hunters would have all pets in stable (no current pet) and would still be alerted to call pet.
+
+(V1.5 total downloads = 1,055)
+
+(6-17-21)
+
+V1.6: Disabled notifications while mounted.
+
+
