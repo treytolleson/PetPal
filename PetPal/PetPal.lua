@@ -2,6 +2,7 @@
     DONE:
     Show pets happiness, dmg percent,loyalty stats,loyalty flavor, and food type on slash command ----- GetPetHappiness(), GetPetLoyalty(), GetPetFoodTypes()
     Display warning on combat if the pet is on not summoned, not attacking, passive, or dead
+     Disable while on mount
 
     NEXT:
     Make tab for showing information and allow the toggling of alerts
@@ -66,26 +67,28 @@
 
             if (not UnitIsDead("player")) then    -- if player is alive
                 if select(2,UnitClass("player"))=="HUNTER" then -- and a hunter
-                    if UnitIsDead("pet") then  -- if pet is dead
-                        deadPet = true;
-                        if (deadPet) then
-                            local msg = "Your Pet is Dead!"
-                            RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
-                        end	
-
-                    elseif(not UnitExists("pet")) then -- if no pet summoned
-                        petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(0)
-                        if petName then -- check to make sure there is a pet in GetStablePetInfo(0)=[Current Pet], there could not be one if hunter wants to train new pet
-                            dismissedPet = true;
-                            if (dismissedPet) then
-                                local msg = "Call Your Pet!"
+                    if (not IsMounted()) then
+                        if UnitIsDead("pet") then  -- if pet is dead
+                            deadPet = true;
+                            if (deadPet) then
+                                local msg = "Your Pet is Dead!"
                                 RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
+                            end	
+
+                        elseif(not UnitExists("pet")) then -- if no pet summoned
+                            petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(0)
+                            if petName then -- check to make sure there is a pet in GetStablePetInfo(0)=[Current Pet], there could not be one if hunter wants to train new pet
+                                dismissedPet = true;
+                                if (dismissedPet) then
+                                    local msg = "Call Your Pet!"
+                                    RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo["RAID_BOSS_EMOTE"])
+                                end
                             end
-                        end
                          
-                    elseif UnitExists("pet") then  -- pet is summoned and alive
-                        deadPet = false;           -- reset checker variables
-                        dismissedPet =false;
+                        elseif UnitExists("pet") then  -- pet is summoned and alive
+                            deadPet = false;           -- reset checker variables
+                            dismissedPet =false;
+                        end
                     end
                 end 
             end
