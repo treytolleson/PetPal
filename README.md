@@ -42,6 +42,8 @@ V1.5: Fixed issue where hunters would have all pets in stable (no current pet) a
 
 V1.6: Disabled notifications while mounted.
 
+(V1.6 total downloads = 2,229)
+
 (9-30-21)
 
 V1.7: Updated to game version 2.5.2
